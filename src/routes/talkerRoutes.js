@@ -63,7 +63,7 @@ router.put(
   talker.validateWatchedAt,
   talker.validateRate,
   talker.editTalker,
-  async (req, res) => {
+  (req, res) => {
     const id = Number(req.params.id);
     const person = {
       id,
@@ -73,4 +73,7 @@ router.put(
   }
 );
 
+router.delete("/:id", talker.validateToken, talker.deleteTalker, (req, res) => {
+  return res.status(204).json(req.body);
+});
 module.exports = router;

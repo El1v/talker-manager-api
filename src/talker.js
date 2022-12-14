@@ -44,6 +44,19 @@ const editTalker = async (req, res, next) => {
   next();
 };
 
+const deleteTalker = async (req, res, next) => {
+  const id = Number(req.params.id);
+  const talkers = await readTalkerFile();
+  const talker = talkers.find((t) => t.id === id);
+
+  if (talker) {
+    const index = talkers.indexOf(talker);
+    talkers.splice(index, 1);
+    await writeTalkerFile(talkers);
+  }
+  next();
+};
+
 const validateToken = (req, res, next) => {
   const { headers, body } = req;
   if (headers.authorization === undefined) {
@@ -141,4 +154,5 @@ module.exports = {
   validateWatchedAt,
   validateRate,
   editTalker,
+  deleteTalker,
 };

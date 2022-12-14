@@ -18,7 +18,7 @@ const validateEmailFormat = (email) => {
 
 const validateEmail = (req, res, next) => {
   const { body } = req;
-  if (body.email === undefined) {
+  if (!body.email) {
     return res.status(400).json({ message: 'O campo "email" é obrigatório' });
   }
   if (!validateEmailFormat(body.email)) {
@@ -31,7 +31,7 @@ const validateEmail = (req, res, next) => {
 
 const validatePassword = (req, res, next) => {
   const { body } = req;
-  if (body.password === undefined) {
+  if (!body.password) {
     return res
       .status(400)
       .json({ message: 'O campo "password" é obrigatório' });
