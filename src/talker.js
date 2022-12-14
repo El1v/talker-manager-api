@@ -1,12 +1,12 @@
-const fs = require("fs").promises;
-const { join } = require("path");
+const fs = require('fs').promises;
+const { join } = require('path');
 
-const path = "./talker.json";
+const path = './talker.json';
 const filePath = join(__dirname, path);
 
 const readTalkerFile = async () => {
   try {
-    const contentFile = await fs.readFile(filePath, "utf-8");
+    const contentFile = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(contentFile);
   } catch (error) {
     console.log(error);
@@ -60,18 +60,17 @@ const deleteTalker = async (req, res, next) => {
 const getTalkerByName = async (name) => {
   const talkers = await readTalkerFile();
   const filtred = talkers.filter((talker) =>
-    talker.name.toLowerCase().includes(name.toLowerCase())
-  );
+    talker.name.toLowerCase().includes(name.toLowerCase()));
   return filtred;
 };
 
 const validateToken = (req, res, next) => {
-  const { headers, body } = req;
+  const { headers } = req;
   if (headers.authorization === undefined) {
-    return res.status(401).json({ message: "Token não encontrado" });
+    return res.status(401).json({ message: 'Token não encontrado' });
   }
   if (headers.authorization.length !== 16) {
-    return res.status(401).json({ message: "Token inválido" });
+    return res.status(401).json({ message: 'Token inválido' });
   }
   next();
 };
@@ -100,7 +99,7 @@ const validateAge = (req, res, next) => {
   if (ageInInteger < 18) {
     return res
       .status(400)
-      .json({ message: "A pessoa palestrante deve ser maior de idade" });
+      .json({ message: 'A pessoa palestrante deve ser maior de idade' });
   }
   next();
 };
@@ -116,8 +115,7 @@ const validateTalk = (req, res, next) => {
 const validateWatchedAt = (req, res, next) => {
   const { body } = req;
   const { talk } = body;
-  const dateRegex =
-    /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+  const dateRegex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
 
   if (talk.watchedAt === undefined) {
     return res
