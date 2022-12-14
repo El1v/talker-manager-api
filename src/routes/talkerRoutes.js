@@ -54,4 +54,23 @@ router.post(
   }
 );
 
+router.put(
+  "/:id",
+  talker.validateToken,
+  talker.validateName,
+  talker.validateAge,
+  talker.validateTalk,
+  talker.validateWatchedAt,
+  talker.validateRate,
+  talker.editTalker,
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const person = {
+      id,
+      ...req.body,
+    };
+    return res.status(200).json(person);
+  }
+);
+
 module.exports = router;

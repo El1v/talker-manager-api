@@ -33,6 +33,17 @@ const getTalkerById = async (id) => {
   return talkers.filter((talker) => talker.id === id);
 };
 
+const editTalker = async (req, res, next) => {
+  const id = Number(req.params.id);
+  const talkers = await readTalkerFile();
+  const talker = talkers.find((t) => t.id === id);
+  const index = talkers.indexOf(talker);
+  const updated = { id, ...req.body };
+  talkers.splice(index, 1, updated);
+  await writeTalkerFile(talkers);
+  next();
+};
+
 const validateToken = (req, res, next) => {
   const { headers, body } = req;
   if (headers.authorization === undefined) {
@@ -129,4 +140,5 @@ module.exports = {
   validateTalk,
   validateWatchedAt,
   validateRate,
+  editTalker,
 };
