@@ -33,4 +33,25 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post(
+  "/",
+  talker.validateToken,
+  talker.validateName,
+  talker.validateAge,
+  talker.validateTalk,
+  talker.validateWatchedAt,
+  talker.validateRate,
+  async (req, res) => {
+    const person = req.body;
+    const talkers = await talker.readTalkerFile();
+    const newTalker = {
+      id: talkers.length + 1,
+      ...person,
+    };
+    talkers.push(newTalker);
+    await talker.writeTalkerFile(talkers);
+    return res.status(201).json(newTalker);
+  }
+);
+
 module.exports = router;
