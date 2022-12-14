@@ -17,22 +17,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const talkerById = await talker.getTalkerById(Number(id));
-    if (talkerById.length <= 0) {
-      return res
-        .status(404)
-        .json({ message: "Pessoa palestrante não encontrada" });
-    }
-    return res.status(200).json(talkerById[0]);
-  } catch (error) {
-    console.log(error);
-    return res.status(500);
-  }
-});
-
 router.post(
   "/",
   talker.validateToken,
@@ -75,5 +59,28 @@ router.put(
 
 router.delete("/:id", talker.validateToken, talker.deleteTalker, (req, res) => {
   return res.status(204).json(req.body);
+});
+
+router.get("/search", talker.validateToken, async (req, res) => {
+  const { q } = req.query;
+  const filtredTalkers = await talker.getTalkerByName(q);
+  console.log(filtredTalkers);
+  return res.status(200).json(filtredTalkers);
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const talkerById = await talker.getTalkerById(Number(id));
+    if (talkerById.length <= 0) {
+      return res
+        .status(404)
+        .json({ message: "Pessoa palestrante não encontrada" });
+    }
+    return res.status(200).json(talkerById[0]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
 });
 module.exports = router;

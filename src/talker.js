@@ -57,6 +57,14 @@ const deleteTalker = async (req, res, next) => {
   next();
 };
 
+const getTalkerByName = async (name) => {
+  const talkers = await readTalkerFile();
+  const filtred = talkers.filter((talker) =>
+    talker.name.toLowerCase().includes(name.toLowerCase())
+  );
+  return filtred;
+};
+
 const validateToken = (req, res, next) => {
   const { headers, body } = req;
   if (headers.authorization === undefined) {
@@ -155,4 +163,5 @@ module.exports = {
   validateRate,
   editTalker,
   deleteTalker,
+  getTalkerByName,
 };
